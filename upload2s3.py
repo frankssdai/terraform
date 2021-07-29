@@ -14,15 +14,16 @@ s3Bucket = 'com-rhinogram-test-fday'
 
 s3 = boto3.resource('s3')
 
+if __name__ == "__main__":   # program starts here
 # open input file and start processing
-with open('data.json') as f:
-  data = json.load(f)
+ with open('data.json') as f:
+    data = json.load(f)
 
-for item in data:
-   ranStr = makeRandomStr()
+ for item in data:
+    ranStr = makeRandomStr()
 
-   fileName = ranStr + '.json'
-   with open(fileName,'w') as fPtr:
+    fileName = ranStr + '.json'
+    with open(fileName,'w') as fPtr:
       aDict = {}
       aDict['name'] = item['name']
       json.dump(aDict,fPtr)
@@ -36,3 +37,6 @@ for item in data:
       bucketKey = f'{org}/{year}/{month}/{day}/{fileName}'
       #print(f'bucketKey: {bucketKey}')
       s3.meta.client.upload_file(fileName, s3Bucket, bucketKey)
+      print(f'{fileName} transferred')
+
+ print('End of program')
